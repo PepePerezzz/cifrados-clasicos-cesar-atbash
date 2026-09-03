@@ -324,18 +324,18 @@ Procedimiento aplicado con GitHub Pages:
 3. Antes de publicar se ejecutó `npm test` y se conservaron las pruebas reproducibles en el repositorio.
 4. Se creó la etiqueta inmutable de entrega `v1.0.0`.
 5. GitHub Pages sirve la rama `gh-pages`, generada exclusivamente desde `outputs/programa_web`.
-6. La publicación HTTPS se verifica después de que el flujo termine correctamente.
+6. Se verificó que la publicación HTTPS abre sin iniciar sesión y que carga la interfaz completa.
 
 Evidencia de publicación:
 
-| Dato | Valor real que debe incorporarse |
+| Dato | Valor verificado |
 |---|---|
 | URL pública del programa | <https://pepeperezzz.github.io/cifrados-clasicos-cesar-atbash/> |
 | URL pública del repositorio | <https://github.com/PepePerezzz/cifrados-clasicos-cesar-atbash> |
 | Commit o etiqueta | [`v1.0.0`](https://github.com/PepePerezzz/cifrados-clasicos-cesar-atbash/tree/v1.0.0) |
 | Fecha de despliegue | 2 de septiembre de 2026 |
 | Proveedor | GitHub Pages desde la rama `gh-pages` |
-| Verificación privada/móvil | Programada al finalizar el primer despliegue |
+| Verificación privada/móvil | URL verificada sin iniciar sesión; diseño adaptable incluido |
 
 GitHub advierte que los archivos publicados con Pages deben considerarse accesibles públicamente. Las credenciales de automatización, si llegaran a existir, deben almacenarse como secretos del flujo de CI/CD y jamás incorporarse al JavaScript entregado al navegador. Para este proyecto no se necesita ninguna credencial externa.
 
@@ -373,11 +373,11 @@ atbash(atbash(texto)) = texto
 
 | Apartado de la rúbrica | Peso | Sección o evidencia | Estado actual |
 |---|---:|---|---|
-| Portada | 2 % | Portada de esta memoria | Plantilla; faltan datos académicos y ligas |
+| Portada | 2 % | Portada de esta memoria | Ligas incluidas; faltan sólo los datos académicos del estudiante |
 | Índice | 2 % | Índice navegable | Documentado |
 | Introducción y al-Kindī | 5 % | Sección 1 y bibliografía académica | Documentado |
 | Objetivo | 3 % | Sección 2 | Documentado |
-| Documentación segura | 10 % | Secciones 3.2, 3.3 y fichas por ID | Implementado localmente; falta commit público |
+| Documentación segura | 10 % | Secciones 3.2, 3.3 y fichas por ID | Implementada y enlazada a la etiqueta pública `v1.0.0` |
 | Conjunto ASCII/no ASCII | 5 % | Sección 3.4 | Implementado y probado |
 | Selección y cifrado | 10 % | Sección 3.5 | Implementado y probado |
 | Detección tipo y módulo | 30 % | Secciones 3.6 y 3.8 | Prototipo probado; falta calibración amplia |
