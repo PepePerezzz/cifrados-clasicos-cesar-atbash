@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <meta name="description" content="Laboratorio educativo de cifrados César y Atbash con análisis automático.">
+  <title>Laboratorio de cifrados clásicos</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="hero">
+    <div>
+      <p class="eyebrow">Criptografía clásica · Proyecto académico</p>
+      <h1>Laboratorio César + Atbash</h1>
+      <p>Cifra sólo los caracteres que actives. Todo lo demás permanece exactamente donde estaba.</p>
+    </div>
+    <div class="privacy-badge">Procesamiento local<br><strong>sin enviar datos</strong></div>
+  </header>
+
+  <main>
+    <section class="panel charset-panel" aria-labelledby="titulo-charset">
+      <div class="section-heading">
+        <div>
+          <p class="step">01 · Configuración</p>
+          <h2 id="titulo-charset">Charset activo</h2>
+        </div>
+        <span id="contador-charset" class="counter" aria-live="polite"></span>
+      </div>
+
+      <div class="form-grid">
+        <label>Preset
+          <select id="preset">
+            <option value="minusculas">Letras minúsculas ASCII</option>
+            <option value="letrasAscii">Letras ASCII A–Z / a–z</option>
+            <option value="asciiImprimible">ASCII imprimible (32–126)</option>
+            <option value="personalizado">Personalizado</option>
+          </select>
+        </label>
+        <label>Caracteres disponibles
+          <textarea id="charset" rows="3" spellcheck="false" aria-describedby="ayuda-charset"></textarea>
+        </label>
+      </div>
+      <p id="ayuda-charset" class="help">Cada casilla define un grafema habilitado. Desmárcalo para convertirlo en passthrough.</p>
+      <div id="charset-grid" class="charset-grid" role="group" aria-label="Caracteres habilitados"></div>
+    </section>
+
+    <div id="aviso" class="notice" data-tipo="info" role="status" aria-live="polite">
+      Configura el charset y elige una operación.
+    </div>
+
+    <div class="operations">
+      <section class="panel" aria-labelledby="titulo-cifrar">
+        <p class="step">02 · Emisor</p>
+        <h2 id="titulo-cifrar">Cifrar</h2>
+        <form id="form-cifrar">
+          <label>Método
+            <select id="metodo">
+              <option value="caesar">César</option>
+              <option value="atbash">Atbash</option>
+            </select>
+          </label>
+          <label id="grupo-desplazamiento">Desplazamiento César
+            <input id="desplazamiento" type="number" value="3" step="1" required>
+          </label>
+          <label>Mensaje
+            <textarea id="texto-cifrar" rows="7" maxlength="20000" placeholder="Ejemplo: casa, café 😊" required></textarea>
+          </label>
+          <button type="submit">Cifrar mensaje</button>
+        </form>
+        <div class="result-card">
+          <div class="result-title"><span>Resultado</span><button id="copiar-cifrado" class="ghost" type="button">Copiar</button></div>
+          <pre id="salida-cifrado"></pre>
+          <p id="detalle-cifrado" class="detail"></p>
+        </div>
+      </section>
+
+      <section class="panel" aria-labelledby="titulo-descifrar">
+        <p class="step">03 · Análisis</p>
+        <h2 id="titulo-descifrar">Descifrar automáticamente</h2>
+        <form id="form-descifrar">
+          <p class="help">No se solicita método ni desplazamiento. Se prueban Atbash y todos los módulos César, se puntúan con frecuencias del español y sólo se muestra el mejor.</p>
+          <label>Criptograma
+            <textarea id="texto-descifrar" rows="7" maxlength="20000" placeholder="Pega aquí el texto cifrado" required></textarea>
+          </label>
+          <button type="submit">Detectar y descifrar</button>
+        </form>
+        <div class="result-card">
+          <div class="result-title"><span>Única salida seleccionada</span><button id="copiar-descifrado" class="ghost" type="button">Copiar</button></div>
+          <pre id="salida-descifrado"></pre>
+          <p id="detalle-descifrado" class="detail"></p>
+        </div>
+      </section>
+    </div>
+
+    <aside class="caveat">
+      <strong>Nota académica:</strong> César y Atbash no son seguros. El análisis automático puede ser ambiguo en mensajes muy cortos; su propósito es demostrar el análisis de frecuencias de al-Kindī, no proteger datos reales.
+    </aside>
+  </main>
+
+  <footer>Laboratorio educativo · César y Atbash · Sin dependencias externas</footer>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
