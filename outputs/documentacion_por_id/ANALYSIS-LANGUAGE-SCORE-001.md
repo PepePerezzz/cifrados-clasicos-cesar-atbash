@@ -10,7 +10,7 @@
 
 ## Qué hace
 
-Asigna a cada candidato un puntaje comparable que combina la compatibilidad de frecuencias con el español, la probabilidad de bigramas o trigramas, la cobertura de palabras y penalizaciones por secuencias improbables. No decide el resultado final; devuelve las métricas necesarias para auditar la selección.
+Asigna a cada candidato un puntaje comparable que combina la compatibilidad de frecuencias con el español, la probabilidad de bigramas o trigramas, la cobertura de palabras, la proporción de letras legibles y penalizaciones por secuencias o símbolos improbables. No decide el resultado final; devuelve las métricas necesarias para auditar la selección.
 
 ## Contrato
 
@@ -22,10 +22,11 @@ Asigna a cada candidato un puntaje comparable que combina la compatibilidad de f
 ## Fórmula general
 
 ```text
-S(c) = −α·χ²(c) + β·L_ngramas(c) + γ·C_palabras(c) − δ·P(c)
+S(c) = −α·χ²(c) + β·L_ngramas(c) + γ·C_palabras(c)
+       − δ·P_secuencias(c) + ε·CoberturaLetras(c) − ζ·SímbolosRaros(c)
 ```
 
-La versión actual usa `−χ² + 14·palabras + 2.5·ngramas − 8·secuenciasRaras − penalizaciónVocales`. Es un prototipo transparente y determinista, pero todavía debe calibrarse con un conjunto y evaluarse con otro antes de informar un porcentaje de exactitud.
+La versión actual usa `−χ² + 14·palabras + 2.5·ngramas − 8·secuenciasRaras − penalizaciónVocales + 25·coberturaLetras − 5·símbolosNoLingüísticos`. La cobertura se calcula sobre el resultado completo para evitar falsos positivos que contienen unas pocas letras con frecuencias plausibles rodeadas por símbolos ilegibles. Es un prototipo transparente y determinista, pero todavía debe calibrarse con un conjunto y evaluarse con otro antes de informar un porcentaje de exactitud.
 
 ## Seguridad y calidad
 
@@ -41,6 +42,7 @@ Tiempo `O(m)` por candidato para n-gramas de orden fijo, más el costo de segmen
 - Componentes del puntaje coinciden con cálculos independientes.
 - Texto vacío, sin letras, muy corto y no español.
 - Determinismo con la misma versión del modelo.
+- Ocho criptogramas reales con un charset de 430 grafemas y desplazamientos entre 19 y 242.
 - Conjunto de evaluación distinto al de calibración.
 
 ## Marcador de código

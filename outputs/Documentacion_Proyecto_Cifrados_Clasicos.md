@@ -240,7 +240,7 @@ El componente de frecuencias puede emplear la estadística chi cuadrada:
 S(c) = −α·χ²(c) + β·Lₙ₋gramas(c) + γ·Cpalabras(c) − δ·Pimprobable(c)
 ```
 
-El prototipo fija de forma transparente `α=1`, `β=2.5`, `γ=14` y `δ=8`, además de una penalización por desviación de la proporción de vocales. Estos pesos permiten una demostración reproducible, pero deben calibrarse con un corpus y evaluarse con otro antes de informar exactitud. [ANALYSIS-CANDIDATES-001](documentacion_por_id/ANALYSIS-CANDIDATES-001.md), [ANALYSIS-LANGUAGE-SCORE-001](documentacion_por_id/ANALYSIS-LANGUAGE-SCORE-001.md) y [ANALYSIS-AUTO-DETECT-001](documentacion_por_id/ANALYSIS-AUTO-DETECT-001.md) separan generación, evaluación y decisión.
+El prototipo fija de forma transparente `α=1`, `β=2.5`, `γ=14` y `δ=8`, además de una penalización por desviación de la proporción de vocales. Para charsets amplios también suma `25·coberturaLetras` y resta `5·símbolosNoLingüísticos`; así, una hipótesis con unas pocas letras estadísticamente plausibles no puede superar fácilmente a una oración legible rodeada de puntuación normal. Estos pesos permiten una demostración reproducible, pero deben calibrarse con un corpus y evaluarse con otro antes de informar exactitud. [ANALYSIS-CANDIDATES-001](documentacion_por_id/ANALYSIS-CANDIDATES-001.md), [ANALYSIS-LANGUAGE-SCORE-001](documentacion_por_id/ANALYSIS-LANGUAGE-SCORE-001.md) y [ANALYSIS-AUTO-DETECT-001](documentacion_por_id/ANALYSIS-AUTO-DETECT-001.md) separan generación, evaluación y decisión.
 
 ### 3.7 Aplicación del método de al-Kindī
 

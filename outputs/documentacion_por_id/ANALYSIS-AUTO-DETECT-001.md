@@ -2,7 +2,7 @@
 
 | Campo | Valor |
 |---|---|
-| Estado | Prototipo implementado y verificado con muestras largas |
+| Estado | Implementado y verificado con muestras largas y charset Unicode de 430 grafemas |
 | Tipo | Función orquestadora síncrona |
 | Función | `detectarYDescifrar(criptograma, alfabeto)` |
 | Archivo | [`programa_web/js/analysis.js`](../programa_web/js/analysis.js) |
@@ -23,7 +23,7 @@ Coordina la generación y puntuación de hipótesis para devolver exactamente un
 
 1. Generar candidatos.
 2. Puntuar lingüísticamente todas las hipótesis.
-3. Ordenar por puntaje total; en igualdad preferir Atbash y después el menor `k`.
+3. Ordenar primero las puntuaciones finitas por valor descendente; enviar las puntuaciones no finitas al final. Solo en una igualdad real se prefiere Atbash y después el menor `k`.
 4. Comparar los dos primeros puntajes para etiquetar el margen como alto, medio o bajo.
 5. Devolver únicamente la primera hipótesis.
 
@@ -42,6 +42,8 @@ Tiempo aproximado `O(n·m)` más el costo de verificación por candidato. Se rec
 - Empate, baja confianza y más de una trama válida.
 - Confirmación de que el objeto final contiene solo una solución.
 - Determinismo de método y desempate.
+- Candidatos sin letras con puntuación `-Infinity`, sin permitir que desplacen a resultados finitos.
+- Ocho criptogramas reales con charset Unicode de 430 grafemas.
 
 ## Marcador de código
 
@@ -53,5 +55,5 @@ Tiempo aproximado `O(n·m)` más el costo de verificación por candidato. Se rec
 
 - Código local y desempate: [`analysis.js`](../programa_web/js/analysis.js)
 - Pruebas César/Atbash: [`analysis.test.mjs`](../programa_web/tests/analysis.test.mjs)
-- Resultado local: 3/3 casos básicos aprobados el 2 de septiembre de 2026.
+- Resultado local: 12/12 pruebas aprobadas, incluyendo ocho criptogramas reales, el 23 de septiembre de 2026.
 - Informe de exactitud y commit permanente: [PENDIENTE]

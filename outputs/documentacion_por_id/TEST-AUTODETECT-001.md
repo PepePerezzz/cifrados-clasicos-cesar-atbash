@@ -2,9 +2,9 @@
 
 | Campo | Valor |
 |---|---|
-| Estado | Tres pruebas básicas aprobadas; evaluación amplia pendiente |
+| Estado | Pruebas básicas y ocho criptogramas Unicode reales aprobados |
 | Tipo | Pruebas unitarias, integración e interfaz |
-| Archivo | [`programa_web/tests/analysis.test.mjs`](../programa_web/tests/analysis.test.mjs) |
+| Archivos | [`programa_web/tests/analysis.test.mjs`](../programa_web/tests/analysis.test.mjs), [`programa_web/tests/large-charset.test.mjs`](../programa_web/tests/large-charset.test.mjs) |
 | Rúbrica | Identificación automática y salida única, 30 % + 15 % |
 
 ## Qué hace
@@ -28,6 +28,7 @@ Evalúa si el sistema identifica César o Atbash, recupera el desplazamiento Cé
 - La interfaz no crea una lista de alternativas.
 - Una entrada por debajo del umbral produce `inconcluso`, no una falsa certeza.
 - El resultado es determinista con modelo y versión idénticos.
+- Una puntuación `-Infinity` nunca se ordena por delante de una puntuación finita.
 
 ## Medición responsable
 
@@ -50,7 +51,7 @@ La trama debe seleccionar correctamente todos los vectores válidos del protocol
 
 ## Evidencia
 
-- Archivo: [`analysis.test.mjs`](../programa_web/tests/analysis.test.mjs)
-- Resultado básico: 3/3 aprobadas con `npm test` el 2 de septiembre de 2026.
+- Archivos: [`analysis.test.mjs`](../programa_web/tests/analysis.test.mjs) y [`large-charset.test.mjs`](../programa_web/tests/large-charset.test.mjs)
+- Resultado: 12/12 pruebas aprobadas con `npm test` el 23 de septiembre de 2026.
 - Enlace al conjunto amplio de evaluación: [PENDIENTE]
 - Versión calibrada, matriz de confusión y commit público: [PENDIENTE]

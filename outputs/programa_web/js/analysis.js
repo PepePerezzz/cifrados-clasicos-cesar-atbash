@@ -63,7 +63,25 @@ export function puntuarEspanol(texto) {
   const vocales = letras.filter((letra) => "aeiouáéíóúü".includes(letra)).length / total;
   const penalizacionVocales = Math.abs(vocales - 0.47) * 30;
 
-  return -chiCuadrada + comunes * 14 + ngramas * 2.5 - raras * 8 - penalizacionVocales;
+  // En charsets grandes una sustitución incorrecta puede conservar unas pocas
+  // letras con frecuencias aparentemente válidas, aunque el resto del texto
+  // esté formado por símbolos. Se mide todo el resultado para impedir que ese
+  // falso positivo supere a una oración legible en español.
+  const grafemasVisibles = Array.from(texto).filter((grafema) => !/\s/u.test(grafema));
+  const simbolosNoLinguisticos = grafemasVisibles.filter(
+    (grafema) => !/[\p{L}\p{N}.,;:¿?¡!'"()\[\]{}\-_/\\]/u.test(grafema)
+  ).length;
+  const coberturaLetras = total / Math.max(grafemasVisibles.length, 1);
+  const bonificacionLegibilidad = coberturaLetras * 25;
+  const penalizacionSimbolos = simbolosNoLinguisticos * 5;
+
+  return -chiCuadrada
+    + comunes * 14
+    + ngramas * 2.5
+    - raras * 8
+    - penalizacionVocales
+    + bonificacionLegibilidad
+    - penalizacionSimbolos;
 }
 
 /**
@@ -97,8 +115,12 @@ export function detectarYDescifrar(criptograma, alfabeto) {
   const evaluados = generarCandidatos(criptograma, alfabeto)
     .map((candidato) => ({ ...candidato, puntuacion: puntuarEspanol(candidato.texto) }))
     .sort((a, b) => {
-      const diferencia = b.puntuacion - a.puntuacion;
-      if (Number.isFinite(diferencia) && diferencia !== 0) return diferencia;
+      const aEsFinita = Number.isFinite(a.puntuacion);
+      const bEsFinita = Number.isFinite(b.puntuacion);
+      if (aEsFinita !== bEsFinita) return aEsFinita ? -1 : 1;
+      if (aEsFinita && a.puntuacion !== b.puntuacion) {
+        return b.puntuacion - a.puntuacion;
+      }
       if (a.metodo !== b.metodo) return a.metodo === "atbash" ? -1 : 1;
       return (a.desplazamiento ?? 0) - (b.desplazamiento ?? 0);
     });
