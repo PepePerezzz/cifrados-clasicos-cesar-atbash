@@ -54,4 +54,24 @@ test("se rechazan alfabetos insuficientes o con símbolos repetidos", () => {
   assert.throws(() => crearAlfabeto(["a"]), /al menos dos/u);
   assert.throws(() => crearAlfabeto(["a", "b", "a"]), /repetido/u);
 });
+
+test("acepta charsets mayores a 256 y conserva el nuevo límite de seguridad", () => {
+  const charsetAmpliado = Array.from(
+    { length: 257 },
+    (_, indice) => String.fromCodePoint(0x10000 + indice)
+  );
+  assert.equal(crearAlfabeto(charsetAmpliado).modulo, 257);
+
+  const charsetMaximo = Array.from(
+    { length: 4096 },
+    (_, indice) => String.fromCodePoint(0x20000 + indice)
+  );
+  assert.equal(crearAlfabeto(charsetMaximo).modulo, 4096);
+
+  const charsetExcesivo = Array.from(
+    { length: 4097 },
+    (_, indice) => String.fromCodePoint(0x30000 + indice)
+  );
+  assert.throws(() => crearAlfabeto(charsetExcesivo), /4096/u);
+});
 // DOC-BLOCK TEST-CIPHERS-001 END

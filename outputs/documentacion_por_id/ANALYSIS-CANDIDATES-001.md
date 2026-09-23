@@ -24,7 +24,7 @@ Produce internamente una hipótesis Atbash y una hipótesis César por cada desp
 1. Calcular Atbash y etiquetarlo con `metodo: "atbash"` y `desplazamiento: null`.
 2. Para `k = 1…n−1`, llamar a `descifrarCesar` y etiquetar cada resultado.
 3. No renderizar, registrar ni exponer la colección fuera del motor de análisis.
-4. Materializar el arreglo; el límite de 256 símbolos evita un crecimiento sin control.
+4. Materializar el arreglo; el límite de 4096 símbolos evita un crecimiento sin control.
 
 El desplazamiento cero puede incluirse en pruebas de identidad, pero se excluye del flujo normal si el cifrador prohíbe `k′ = 0`.
 

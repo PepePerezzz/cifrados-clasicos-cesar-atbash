@@ -53,6 +53,6 @@ Tiempo `O(longitud del texto + n)` si incluye la validación del alfabeto; memor
 ## Evidencia
 
 - Límite de mensaje: 20,000 unidades UTF-16 de formulario.
-- Límite de charset: 256 grafemas.
+- Límite de charset: 4096 grafemas.
 - Pruebas de alfabeto y desplazamiento: [`ciphers.test.mjs`](../programa_web/tests/ciphers.test.mjs)
 - Cobertura completa y commit público: [PENDIENTE]

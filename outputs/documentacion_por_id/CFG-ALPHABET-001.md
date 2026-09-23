@@ -24,7 +24,7 @@ Convierte los grafemas activados por el usuario en un alfabeto ordenado y libre 
 1. Conservar literalmente la entrada, sin normalización Unicode.
 2. Segmentar por grafemas mediante `Intl.Segmenter`; usar `Array.from` como reemplazo documentado.
 3. Detectar duplicados literales.
-4. Rechazar alfabetos con menos de dos o más de 256 grafemas.
+4. Rechazar alfabetos con menos de dos o más de 4096 grafemas.
 5. Construir un `Map` con la posición de cada símbolo.
 6. Congelar el arreglo y la envoltura antes de entregarlos al resto del programa.
 
