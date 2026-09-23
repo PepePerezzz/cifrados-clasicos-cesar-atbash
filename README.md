@@ -26,6 +26,10 @@ La función central es `transformarSoloActivos` en `js/ciphers.js`. Recorre el t
 
 La misma función es utilizada por cifrado César, descifrado César y Atbash. Su documentación independiente corresponde a `CIPHER-PASSTHROUGH-001`.
 
+El charset admite hasta **4096 grafemas activos**, por lo que puede incorporar
+alfabetos multilingües, símbolos y emojis. El límite continúa siendo finito para
+evitar consumos de memoria sin control.
+
 ## Ejemplos verificados
 
 1. Charset activo: `abcdefghijklmnopqrstuvwxyz`; César `k=3`.

@@ -1,4 +1,6 @@
-const MAX_CHARSET_SIZE = 256;
+// Permite charsets amplios (alfabetos multilingües, símbolos y emojis) sin
+// dejar el tamaño completamente ilimitado, lo que podría bloquear la UI.
+const MAX_CHARSET_SIZE = 4096;
 
 /**
  * Separa una cadena sin alterar sus unidades originales.
