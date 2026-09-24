@@ -1,59 +1,24 @@
-# ANALYSIS-AUTO-DETECT-001 — Selección automática del método y la clave
+# ANALYSIS-AUTO-DETECT-001 — `detectarYDescifrar`
 
 | Campo | Valor |
 |---|---|
-| Estado | Implementado y verificado con muestras largas y charset Unicode de 430 grafemas |
-| Tipo | Función orquestadora síncrona |
-| Función | `detectarYDescifrar(criptograma, alfabeto)` |
-| Archivo | [`programa_web/js/analysis.js`](../programa_web/js/analysis.js) |
-| Rúbrica | Determinación automática Atbash/César + módulo, 30 % |
+| Archivo | `programa_web/js/analysis.js` |
+| Tipo | Función orquestadora exportada |
 
 ## Qué hace
 
-Coordina la generación y puntuación de hipótesis para devolver exactamente una decisión. Informa `metodo: "caesar"` con su desplazamiento o `metodo: "atbash"` sin desplazamiento. Cuando el margen es pequeño mantiene una sola salida, pero la etiqueta como confianza baja; nunca muestra una lista para selección humana.
+Genera hipótesis, puntúa cada texto, ordena las puntuaciones finitas de mayor a menor y devuelve únicamente la mejor. Las puntuaciones no finitas se envían al final. En empate real prefiere Atbash y después el menor desplazamiento.
 
 ## Contrato
 
-- **Entrada:** criptograma y alfabeto validados.
-- **Salida:** `{ texto, metodo, desplazamiento, confianza }`.
-- **Precondición:** todas las funciones dependientes usan el mismo charset literal.
-- **Postcondición:** nunca retorna la colección de candidatos a la interfaz.
-
-## Regla de decisión
-
-1. Generar candidatos.
-2. Puntuar lingüísticamente todas las hipótesis.
-3. Ordenar primero las puntuaciones finitas por valor descendente; enviar las puntuaciones no finitas al final. Solo en una igualdad real se prefiere Atbash y después el menor `k`.
-4. Comparar los dos primeros puntajes para etiquetar el margen como alto, medio o bajo.
-5. Devolver únicamente la primera hipótesis.
+- **Entradas:** criptograma y alfabeto validado.
+- **Salida:** `{ metodo, desplazamiento, texto, confianza }`.
+- **Confianza:** alta, media o baja según la diferencia entre los dos mejores puntajes.
 
 ## Seguridad y limitaciones
 
-Debe abortar el trabajo si se exceden límites o si cambia una solicitud más reciente. La “confianza” no debe etiquetarse como porcentaje sin calibración. Para entradas de una sola letra, aleatorias o en otro idioma, el resultado puede ser indeterminado por razones matemáticas.
+Las alternativas nunca llegan a la interfaz. La confianza es una etiqueta heurística; mensajes cortos, otro idioma o un charset incorrecto pueden producir ambigüedad.
 
 ## Complejidad
 
-Tiempo aproximado `O(n·m)` más el costo de verificación por candidato. Se recomienda evaluación incremental para limitar memoria y mantener la interfaz receptiva.
-
-## Pruebas asociadas
-
-- César y Atbash con trama válida.
-- Entrada externa larga en español.
-- Empate, baja confianza y más de una trama válida.
-- Confirmación de que el objeto final contiene solo una solución.
-- Determinismo de método y desempate.
-- Candidatos sin letras con puntuación `-Infinity`, sin permitir que desplacen a resultados finitos.
-- Ocho criptogramas reales con charset Unicode de 430 grafemas.
-
-## Marcador de código
-
-```js
-/** @doc-id ANALYSIS-AUTO-DETECT-001 */
-```
-
-## Evidencia
-
-- Código local y desempate: [`analysis.js`](../programa_web/js/analysis.js)
-- Pruebas César/Atbash: [`analysis.test.mjs`](../programa_web/tests/analysis.test.mjs)
-- Resultado local: 12/12 pruebas aprobadas, incluyendo ocho criptogramas reales, el 23 de septiembre de 2026.
-- Informe de exactitud y commit permanente: [PENDIENTE]
+Dominada por la generación y evaluación: aproximadamente `O(m·n)`.

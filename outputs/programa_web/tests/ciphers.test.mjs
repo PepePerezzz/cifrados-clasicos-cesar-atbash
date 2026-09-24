@@ -3,7 +3,6 @@ import assert from "node:assert/strict";
 import { crearAlfabeto } from "../js/alphabet.js";
 import { cifrarCesar, descifrarCesar, transformarAtbash } from "../js/ciphers.js";
 
-// DOC-BLOCK TEST-CIPHERS-001 START
 test("César transforma sólo letras minúsculas habilitadas", () => {
   const alfabeto = crearAlfabeto("abcdefghijklmnopqrstuvwxyz");
   const entrada = "café 😊\nCasa!";
@@ -74,4 +73,3 @@ test("acepta charsets mayores a 256 y conserva el nuevo límite de seguridad", (
   );
   assert.throws(() => crearAlfabeto(charsetExcesivo), /4096/u);
 });
-// DOC-BLOCK TEST-CIPHERS-001 END

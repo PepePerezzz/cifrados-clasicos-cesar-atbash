@@ -1,54 +1,56 @@
-# Catálogo de documentación por ID
+# Documentación segura por función
 
-Este directorio contiene una ficha independiente por cada función o bloque importante propuesto para el proyecto. Los archivos son documentación de referencia y no sustituyen el código fuente ni las pruebas.
+Esta carpeta documenta el programa sin publicar capturas, credenciales, datos privados ni copias completas del código. Cada función tiene un identificador único escrito tanto en el archivo fuente mediante `@doc-id` como en una ficha Markdown independiente.
 
-## Convención
+## Inventario
 
-En el código, cada responsabilidad debe incluir un marcador como el siguiente:
+### Configuración del alfabeto
 
-```js
-/**
- * @doc-id CIPHER-CAESAR-ENC-001
- * @see docs/ids/CIPHER-CAESAR-ENC-001.md
- */
-```
+| ID | Función |
+|---|---|
+| [CFG-GRAPHEME-SEGMENT-001](CFG-GRAPHEME-SEGMENT-001.md) | `segmentarGrafemas` |
+| [CFG-ALPHABET-001](CFG-ALPHABET-001.md) | `crearAlfabeto` |
 
-Para bloques sin función propia:
+### Cifrados
 
-```js
-// DOC-BLOCK SEC-DOC-MAP-001 START
-// ... bloque documentado ...
-// DOC-BLOCK SEC-DOC-MAP-001 END
-```
+| ID | Función |
+|---|---|
+| [CIPHER-SHIFT-NORMALIZE-001](CIPHER-SHIFT-NORMALIZE-001.md) | `normalizarDesplazamiento` |
+| [CIPHER-PASSTHROUGH-001](CIPHER-PASSTHROUGH-001.md) | `transformarSoloActivos` |
+| [CIPHER-CAESAR-ENC-001](CIPHER-CAESAR-ENC-001.md) | `cifrarCesar` |
+| [CIPHER-CAESAR-DEC-001](CIPHER-CAESAR-DEC-001.md) | `descifrarCesar` |
+| [CIPHER-ATBASH-001](CIPHER-ATBASH-001.md) | `transformarAtbash` |
 
-El nombre del archivo debe coincidir exactamente con el ID. La evidencia final debe enlazar un commit o etiqueta permanente y nunca una rama cambiante como única referencia.
+### Análisis automático
 
-## Índice
+| ID | Función |
+|---|---|
+| [ANALYSIS-TEXT-NORMALIZE-001](ANALYSIS-TEXT-NORMALIZE-001.md) | `textoAnalizable` |
+| [ANALYSIS-LANGUAGE-SCORE-001](ANALYSIS-LANGUAGE-SCORE-001.md) | `puntuarEspanol` |
+| [ANALYSIS-CANDIDATES-001](ANALYSIS-CANDIDATES-001.md) | `generarCandidatos` |
+| [ANALYSIS-AUTO-DETECT-001](ANALYSIS-AUTO-DETECT-001.md) | `detectarYDescifrar` |
 
-| ID | Responsabilidad | Estado inicial |
-|---|---|---|
-| [CFG-ALPHABET-001](CFG-ALPHABET-001.md) | Construcción del alfabeto | Verificado localmente |
-| [VAL-INPUT-001](VAL-INPUT-001.md) | Validación de entradas | Implementación distribuida |
-| [PAYLOAD-FRAME-001](PAYLOAD-FRAME-001.md) | Trama autoverificable | Propuesto |
-| [PAYLOAD-VERIFY-001](PAYLOAD-VERIFY-001.md) | Verificación y extracción de la trama | Propuesto |
-| [CIPHER-PASSTHROUGH-001](CIPHER-PASSTHROUGH-001.md) | Transformar sólo el charset activo | Verificado localmente |
-| [CIPHER-CAESAR-ENC-001](CIPHER-CAESAR-ENC-001.md) | Cifrado César | Verificado localmente |
-| [CIPHER-CAESAR-DEC-001](CIPHER-CAESAR-DEC-001.md) | Descifrado César | Verificado localmente |
-| [CIPHER-ATBASH-001](CIPHER-ATBASH-001.md) | Transformación Atbash | Verificado localmente |
-| [ANALYSIS-FREQUENCY-001](ANALYSIS-FREQUENCY-001.md) | Análisis de frecuencias | Bloque implementado |
-| [ANALYSIS-CANDIDATES-001](ANALYSIS-CANDIDATES-001.md) | Generación de hipótesis | Verificado localmente |
-| [ANALYSIS-LANGUAGE-SCORE-001](ANALYSIS-LANGUAGE-SCORE-001.md) | Puntaje del español | Prototipo implementado |
-| [ANALYSIS-AUTO-DETECT-001](ANALYSIS-AUTO-DETECT-001.md) | Selección automática | Pruebas básicas aprobadas |
-| [UI-ENCRYPT-001](UI-ENCRYPT-001.md) | Flujo visual de cifrado | Comprobado localmente |
-| [UI-DECRYPT-001](UI-DECRYPT-001.md) | Flujo visual de descifrado | Implementado |
-| [UI-OUTPUT-001](UI-OUTPUT-001.md) | Salida segura y única | Implementado |
-| [SEC-DOC-MAP-001](SEC-DOC-MAP-001.md) | Vínculo seguro código–documentación | Propuesto |
-| [TEST-CIPHERS-001](TEST-CIPHERS-001.md) | Pruebas de César y Atbash | 7 pruebas aprobadas |
-| [TEST-AUTODETECT-001](TEST-AUTODETECT-001.md) | Pruebas de detección | 3 pruebas básicas aprobadas |
+### Interfaz y validación
 
-## Estados permitidos
+| ID | Función |
+|---|---|
+| [UI-QUERY-001](UI-QUERY-001.md) | `$` |
+| [UI-SYMBOL-NAME-001](UI-SYMBOL-NAME-001.md) | `nombreVisible` |
+| [UI-MESSAGE-001](UI-MESSAGE-001.md) | `mostrarMensaje` |
+| [UI-CHARSET-SELECTOR-001](UI-CHARSET-SELECTOR-001.md) | `reconstruirSelector` |
+| [UI-ACTIVE-ALPHABET-001](UI-ACTIVE-ALPHABET-001.md) | `alfabetoActivo` |
+| [VAL-TEXT-001](VAL-TEXT-001.md) | `validarTexto` |
+| [UI-SAFE-OUTPUT-001](UI-SAFE-OUTPUT-001.md) | `mostrarResultadoSeguro` |
+| [UI-METHOD-STATE-001](UI-METHOD-STATE-001.md) | `actualizarEstadoMetodo` |
+| [UI-ENCRYPT-001](UI-ENCRYPT-001.md) | `manejarCifrado` |
+| [UI-DECRYPT-001](UI-DECRYPT-001.md) | `manejarDescifrado` |
+| [UI-COPY-001](UI-COPY-001.md) | `copiarSalida` |
+| [UI-INIT-001](UI-INIT-001.md) | `iniciar` |
 
-- **Propuesto:** la ficha existe, pero no hay código enlazado.
-- **Implementado:** existe código en un commit permanente.
-- **Verificado:** las pruebas asociadas se ejecutaron y aprobaron.
-- **Obsoleto:** la responsabilidad fue sustituida y la ficha apunta al ID sucesor.
+## Reglas de seguridad documental
+
+- Las fichas explican contratos y comportamiento; no duplican archivos completos.
+- No contienen contraseñas, tokens, rutas privadas, datos personales ni secretos.
+- Cada ID pertenece a una sola función.
+- Los enlaces son relativos y siguen funcionando al publicar el repositorio.
+- El inventario esperado es de **23 funciones y 23 fichas**.

@@ -87,8 +87,8 @@ Se considera aceptado el flujo de cifrado cuando el usuario puede elegir César 
 | Cifrado seleccionable | César solicita *k*; Atbash no lo solicita | Interfaz y pruebas locales implementadas |
 | Detección automática | No pide al usuario elegir una rotación | Pruebas básicas de `ANALYSIS-AUTO-DETECT-001` |
 | Identificación César | Informa el desplazamiento normalizado | Resultado automatizado y prueba asociada |
-| Salida única | La interfaz nunca lista candidatos | Prueba de DOM y `UI-OUTPUT-001` |
-| Uso de al-Kindī | Emplea conteo de frecuencias dentro del puntaje | Pruebas unitarias y `ANALYSIS-FREQUENCY-001` |
+| Salida única | La interfaz nunca lista candidatos | Prueba de DOM y `UI-SAFE-OUTPUT-001` |
+| Uso de al-Kindī | Emplea conteo de frecuencias dentro del puntaje | Pruebas unitarias y `ANALYSIS-LANGUAGE-SCORE-001` |
 | Publicación | Dos ligas HTTPS verificables | URL del sitio, URL del repositorio y commit |
 
 ### 3.2 Arquitectura implementada
@@ -116,11 +116,11 @@ outputs/
 El flujo de datos propuesto es el siguiente:
 
 1. La interfaz recibe texto, método, alfabeto y, si corresponde, desplazamiento.
-2. `VAL-INPUT-001` valida límites y tipos; `CFG-ALPHABET-001` segmenta y valida literalmente el conjunto.
+2. `VAL-TEXT-001` valida el tamaño; `CFG-GRAPHEME-SEGMENT-001` segmenta y `CFG-ALPHABET-001` valida literalmente el conjunto.
 3. En cifrado, la función César o Atbash transforma únicamente los símbolos pertenecientes al alfabeto.
 4. En descifrado, `ANALYSIS-CANDIDATES-001` genera hipótesis y `ANALYSIS-LANGUAGE-SCORE-001` las puntúa.
 5. `ANALYSIS-AUTO-DETECT-001` selecciona una hipótesis de forma determinista.
-6. `UI-OUTPUT-001` escribe la salida como texto, sin interpretar contenido suministrado por el usuario como HTML.
+6. `UI-SAFE-OUTPUT-001` escribe la salida como texto, sin interpretar contenido suministrado por el usuario como HTML.
 
 ### 3.3 Documentación segura mediante identificadores
 
@@ -133,15 +133,7 @@ No se recomienda insertar capturas del código ni copiar archivos completos dent
  */
 ```
 
-Para un bloque que no corresponda a una función completa se usa una pareja de marcadores:
-
-```js
-// DOC-BLOCK ANALYSIS-FREQUENCY-001 START
-// ... implementación ...
-// DOC-BLOCK ANALYSIS-FREQUENCY-001 END
-```
-
-Cada ficha independiente documenta responsabilidad, entradas, salidas, precondiciones, algoritmo, complejidad, errores, seguridad, limitaciones y pruebas. La liga al código debe apuntar a un commit o etiqueta permanente, no a números de línea de una rama cambiante. Antes de hacer público el repositorio se debe comprobar que el historial no contiene contraseñas, tokens, claves privadas, archivos `.env`, credenciales de servicios o datos personales. Si una credencial se filtra, primero se revoca o rota; borrarla en un commit posterior no la elimina del historial.
+La versión actual documenta exclusivamente funciones reales: cada función tiene un solo ID y cada ID una sola ficha. Cada ficha independiente documenta responsabilidad, entradas, salidas, algoritmo, complejidad, errores y seguridad. La liga al código debe apuntar a un commit o etiqueta permanente, no a números de línea de una rama cambiante. Antes de hacer público el repositorio se debe comprobar que el historial no contiene contraseñas, tokens, claves privadas, archivos `.env`, credenciales de servicios o datos personales. Si una credencial se filtra, primero se revoca o rota; borrarla en un commit posterior no la elimina del historial.
 
 ### 3.4 Alfabeto configurable: ASCII y Unicode
 
@@ -166,7 +158,7 @@ Reglas de coincidencia implementadas:
 - Conservar sin cambio los grafemas que no estén activados, aunque estuvieran disponibles antes de que el usuario desmarcara su casilla.
 - Mostrar al usuario el valor calculado de *n* y el desplazamiento normalizado *k′*.
 
-La ficha [CFG-ALPHABET-001](documentacion_por_id/CFG-ALPHABET-001.md) formaliza el charset, [VAL-INPUT-001](documentacion_por_id/VAL-INPUT-001.md) define los errores visibles y [CIPHER-PASSTHROUGH-001](documentacion_por_id/CIPHER-PASSTHROUGH-001.md) documenta el recorrido compartido por los tres algoritmos.
+Las fichas [CFG-GRAPHEME-SEGMENT-001](documentacion_por_id/CFG-GRAPHEME-SEGMENT-001.md) y [CFG-ALPHABET-001](documentacion_por_id/CFG-ALPHABET-001.md) formalizan el charset; [VAL-TEXT-001](documentacion_por_id/VAL-TEXT-001.md) define el límite del mensaje y [CIPHER-PASSTHROUGH-001](documentacion_por_id/CIPHER-PASSTHROUGH-001.md) documenta el recorrido compartido por los tres algoritmos.
 
 #### 3.4.1 Regla de caracteres fuera de la lista
 
@@ -249,22 +241,20 @@ El conocimiento histórico no aparece como un párrafo decorativo; se traduce en
 | Idea descrita por al-Kindī | Aplicación computacional |
 |---|---|
 | Contar las letras de un texto del idioma | Modelo de frecuencias esperadas del español |
-| Contar los símbolos del criptograma | Histograma calculado por `ANALYSIS-FREQUENCY-001` |
+| Contar los símbolos del criptograma | Histograma calculado por `ANALYSIS-LANGUAGE-SCORE-001` |
 | Comparar los órdenes de frecuencia | Distancia chi cuadrada de cada candidato |
 | Revisar asociaciones entre letras | Puntaje de bigramas y trigramas |
 | Considerar palabras o fórmulas probables | Cobertura de un vocabulario controlado |
 | Refinar hipótesis | Puntaje combinado y regla de desempate |
 | Elegir la lectura más probable | Selector automático sin lista visible |
 
-El análisis de frecuencias se documenta en [ANALYSIS-FREQUENCY-001](documentacion_por_id/ANALYSIS-FREQUENCY-001.md). Su fuente de datos debe quedar citada y su licencia debe permitir la redistribución. El modelo nunca debe modificar el texto candidato que se muestra; debe analizar una copia normalizada para evitar perder mayúsculas, signos o grafemas.
+El análisis de frecuencias se documenta en [ANALYSIS-LANGUAGE-SCORE-001](documentacion_por_id/ANALYSIS-LANGUAGE-SCORE-001.md) y la preparación de su copia en [ANALYSIS-TEXT-NORMALIZE-001](documentacion_por_id/ANALYSIS-TEXT-NORMALIZE-001.md). El modelo nunca modifica el texto candidato que se muestra; analiza una copia normalizada para evitar perder mayúsculas, signos o grafemas.
 
 ### 3.8 Salida única y validación automática
 
 La identificación perfecta no puede garantizarse para toda cadena arbitraria. Un criptograma de uno o dos caracteres puede admitir varias lecturas válidas, y una cadena aleatoria no contiene necesariamente estadísticas del español. Por ejemplo, con el alfabeto A–Z el criptograma `B` produce `Y` mediante Atbash y `A` mediante César con desplazamiento 1; ambas son unidades lingüísticas posibles. Esta indeterminación es matemática, no un defecto que pueda eliminarse aumentando la velocidad del programa.
 
 La versión implementada genera una hipótesis Atbash y `n−1` hipótesis César, puntúa todas con frecuencias, palabras y n-gramas del español, ordena de manera determinista y entrega sólo la primera. La interfaz informa método, desplazamiento cuando aplica y una confianza cualitativa calculada a partir del margen frente al segundo lugar. No expone la colección de candidatos ni solicita selección humana.
-
-Las fichas [PAYLOAD-FRAME-001](documentacion_por_id/PAYLOAD-FRAME-001.md) y [PAYLOAD-VERIFY-001](documentacion_por_id/PAYLOAD-VERIFY-001.md) conservan una ampliación propuesta, todavía no implementada. Una trama embebida modificaría la longitud y desplazaría caracteres, por lo que no puede combinarse directamente con la nueva regla de preservación posicional. Si se implementa en el futuro, sus metadatos deberán viajar en un campo separado del criptograma y nunca alterar la cadena visible. Esa verificación tampoco convertiría a César ni a Atbash en cifrados seguros.
 
 Para criptogramas externos, el prototipo siempre muestra el candidato superior y etiqueta un margen pequeño como confianza baja. Esto satisface la salida única, pero no garantiza que la frase elegida sea correcta en textos ambiguos. La evaluación final debe medir la precisión con un corpus separado y reconocer explícitamente esta limitación.
 
@@ -284,7 +274,7 @@ Controles mínimos de accesibilidad y claridad:
 - Desactivar el botón mientras exista un error de validación.
 - No borrar automáticamente el texto introducido después de procesarlo.
 
-Los controladores se describen en [UI-ENCRYPT-001](documentacion_por_id/UI-ENCRYPT-001.md) y [UI-DECRYPT-001](documentacion_por_id/UI-DECRYPT-001.md); la salida se limita mediante [UI-OUTPUT-001](documentacion_por_id/UI-OUTPUT-001.md).
+Los controladores se describen en [UI-ENCRYPT-001](documentacion_por_id/UI-ENCRYPT-001.md) y [UI-DECRYPT-001](documentacion_por_id/UI-DECRYPT-001.md); la salida se limita mediante [UI-SAFE-OUTPUT-001](documentacion_por_id/UI-SAFE-OUTPUT-001.md).
 
 ### 3.10 Seguridad y privacidad
 
@@ -311,7 +301,7 @@ style-src 'self'; img-src 'self' data:; object-src 'none';
 base-uri 'none'; frame-ancestors 'none'
 ```
 
-La ficha [SEC-DOC-MAP-001](documentacion_por_id/SEC-DOC-MAP-001.md) define el vínculo seguro entre código y documentación. [UI-OUTPUT-001](documentacion_por_id/UI-OUTPUT-001.md) incluye la defensa frente a inyección en el DOM. OWASP recomienda precisamente tratar `textContent` como un destino seguro para texto no confiable y evitar insertar entradas en contextos HTML ejecutables (OWASP Foundation, s. f.).
+El [índice de documentación segura](documentacion_por_id/README.md) define el vínculo entre código e IDs. [UI-SAFE-OUTPUT-001](documentacion_por_id/UI-SAFE-OUTPUT-001.md) incluye la defensa frente a inyección en el DOM. OWASP recomienda precisamente tratar `textContent` como un destino seguro para texto no confiable y evitar insertar entradas en contextos HTML ejecutables (OWASP Foundation, s. f.).
 
 ### 3.11 Publicación del sitio y del código
 
@@ -367,7 +357,7 @@ descifrarCesar(cifrarCesar(texto, k), k) = texto
 atbash(atbash(texto)) = texto
 ```
 
-[TEST-CIPHERS-001](documentacion_por_id/TEST-CIPHERS-001.md) agrupa las pruebas de reversibilidad y límites. [TEST-AUTODETECT-001](documentacion_por_id/TEST-AUTODETECT-001.md) define un conjunto de evaluación separado del corpus de calibración para evitar reportar una precisión inflada. Si se publica un porcentaje de aciertos, deben quedar disponibles el conjunto evaluado, la versión del modelo, la fórmula exacta y el comando de ejecución.
+Las pruebas reproducibles de `tests/ciphers.test.mjs`, `tests/analysis.test.mjs` y `tests/large-charset.test.mjs` cubren reversibilidad, límites y detección automática. Si se publica un porcentaje de aciertos, deben quedar disponibles el conjunto evaluado, la versión del modelo, la fórmula exacta y el comando de ejecución.
 
 ### 3.13 Trazabilidad con la rúbrica
 
@@ -388,34 +378,39 @@ atbash(atbash(texto)) = texto
 
 ### 3.14 Catálogo de funciones y bloques por ID
 
-Los nombres y firmas corresponden a la implementación local, salvo las dos filas marcadas como propuestas. Los IDs se conservan como vínculo estable aunque el código cambie en versiones futuras.
+Los nombres y firmas corresponden a la implementación real. Cada función tiene un ID único y una ficha independiente.
 
 | ID | Función o bloque | Responsabilidad principal |
 |---|---|---|
-| [CFG-ALPHABET-001](documentacion_por_id/CFG-ALPHABET-001.md) | `crearAlfabeto` | Segmentar y validar símbolos literalmente |
-| [VAL-INPUT-001](documentacion_por_id/VAL-INPUT-001.md) | `validarTexto` y validadores del núcleo | Validar datos y límites antes de operar |
-| [PAYLOAD-FRAME-001](documentacion_por_id/PAYLOAD-FRAME-001.md) | `crearTramaVerificable` — propuesto | Diseñar metadatos separados del criptograma |
-| [PAYLOAD-VERIFY-001](documentacion_por_id/PAYLOAD-VERIFY-001.md) | `verificarTrama` — propuesto | Verificar metadatos separados |
+| [CFG-GRAPHEME-SEGMENT-001](documentacion_por_id/CFG-GRAPHEME-SEGMENT-001.md) | `segmentarGrafemas` | Separar texto en grafemas |
+| [CFG-ALPHABET-001](documentacion_por_id/CFG-ALPHABET-001.md) | `crearAlfabeto` | Validar y construir el alfabeto |
+| [CIPHER-SHIFT-NORMALIZE-001](documentacion_por_id/CIPHER-SHIFT-NORMALIZE-001.md) | `normalizarDesplazamiento` | Ajustar cualquier entero al módulo |
 | [CIPHER-PASSTHROUGH-001](documentacion_por_id/CIPHER-PASSTHROUGH-001.md) | `transformarSoloActivos` | Conservar literalmente todo grafema inactivo |
 | [CIPHER-CAESAR-ENC-001](documentacion_por_id/CIPHER-CAESAR-ENC-001.md) | `cifrarCesar` | Aplicar desplazamiento positivo modular |
 | [CIPHER-CAESAR-DEC-001](documentacion_por_id/CIPHER-CAESAR-DEC-001.md) | `descifrarCesar` | Aplicar desplazamiento inverso modular |
 | [CIPHER-ATBASH-001](documentacion_por_id/CIPHER-ATBASH-001.md) | `transformarAtbash` | Reflejar posiciones del alfabeto |
-| [ANALYSIS-FREQUENCY-001](documentacion_por_id/ANALYSIS-FREQUENCY-001.md) | Bloque en `puntuarEspanol` | Construir el histograma lingüístico |
+| [ANALYSIS-TEXT-NORMALIZE-001](documentacion_por_id/ANALYSIS-TEXT-NORMALIZE-001.md) | `textoAnalizable` | Preparar una copia para análisis |
 | [ANALYSIS-CANDIDATES-001](documentacion_por_id/ANALYSIS-CANDIDATES-001.md) | `generarCandidatos` | Enumerar Atbash y todas las rotaciones César |
 | [ANALYSIS-LANGUAGE-SCORE-001](documentacion_por_id/ANALYSIS-LANGUAGE-SCORE-001.md) | `puntuarEspanol` | Combinar frecuencias, n-gramas y léxico |
 | [ANALYSIS-AUTO-DETECT-001](documentacion_por_id/ANALYSIS-AUTO-DETECT-001.md) | `detectarYDescifrar` | Elegir de forma determinista una sola salida |
+| [UI-QUERY-001](documentacion_por_id/UI-QUERY-001.md) | `$` | Consultar un elemento del DOM |
+| [UI-SYMBOL-NAME-001](documentacion_por_id/UI-SYMBOL-NAME-001.md) | `nombreVisible` | Etiquetar caracteres de control |
+| [UI-MESSAGE-001](documentacion_por_id/UI-MESSAGE-001.md) | `mostrarMensaje` | Presentar avisos seguros |
+| [UI-CHARSET-SELECTOR-001](documentacion_por_id/UI-CHARSET-SELECTOR-001.md) | `reconstruirSelector` | Crear casillas del charset |
+| [UI-ACTIVE-ALPHABET-001](documentacion_por_id/UI-ACTIVE-ALPHABET-001.md) | `alfabetoActivo` | Construir el conjunto habilitado |
+| [VAL-TEXT-001](documentacion_por_id/VAL-TEXT-001.md) | `validarTexto` | Limitar el tamaño del mensaje |
+| [UI-SAFE-OUTPUT-001](documentacion_por_id/UI-SAFE-OUTPUT-001.md) | `mostrarResultadoSeguro` | Escribir texto sin interpretar HTML |
+| [UI-METHOD-STATE-001](documentacion_por_id/UI-METHOD-STATE-001.md) | `actualizarEstadoMetodo` | Sincronizar controles por método |
 | [UI-ENCRYPT-001](documentacion_por_id/UI-ENCRYPT-001.md) | `manejarCifrado` | Coordinar validación, cifrado y presentación |
 | [UI-DECRYPT-001](documentacion_por_id/UI-DECRYPT-001.md) | `manejarDescifrado` | Coordinar el análisis automático |
-| [UI-OUTPUT-001](documentacion_por_id/UI-OUTPUT-001.md) | `mostrarResultadoSeguro` | Renderizar texto sin interpretar HTML |
-| [SEC-DOC-MAP-001](documentacion_por_id/SEC-DOC-MAP-001.md) | Bloque de metadatos documentales | Relacionar código, ficha, prueba y commit |
-| [TEST-CIPHERS-001](documentacion_por_id/TEST-CIPHERS-001.md) | Suite de cifrados | Verificar reversibilidad y casos límite |
-| [TEST-AUTODETECT-001](documentacion_por_id/TEST-AUTODETECT-001.md) | Suite de detección | Medir selección automática y salida única |
+| [UI-COPY-001](documentacion_por_id/UI-COPY-001.md) | `copiarSalida` | Copiar resultados al portapapeles |
+| [UI-INIT-001](documentacion_por_id/UI-INIT-001.md) | `iniciar` | Inicializar estado y eventos |
 
 ### 3.15 Limitaciones y uso ético
 
 La calidad del descifrado estadístico depende del idioma, la longitud, el corpus y la similitud entre el texto analizado y el modelo. Un mensaje muy corto, nombres propios, abreviaturas, código o una lengua no modelada pueden producir baja confianza. Los alfabetos personalizados que cifran espacios y signos también modifican las fronteras visibles de palabra; el sistema puede recuperarlas al probar la clave correcta, pero los candidatos incorrectos resultan más difíciles de comparar.
 
-El programa no debe presentarse como herramienta para vulnerar cuentas, interceptar comunicaciones privadas o evadir controles de acceso. Su objeto es demostrar por qué los cifrados clásicos filtran estructura y cómo el análisis estadístico puede explotarla. Los mensajes usados en pruebas deben ser propios, públicos o creados específicamente para la práctica. La trama verificable descrita como ampliación no está implementada y, si se desarrollara, tampoco añadiría seguridad criptográfica.
+El programa no debe presentarse como herramienta para vulnerar cuentas, interceptar comunicaciones privadas o evadir controles de acceso. Su objeto es demostrar por qué los cifrados clásicos filtran estructura y cómo el análisis estadístico puede explotarla. Los mensajes usados en pruebas deben ser propios, públicos o creados específicamente para la práctica.
 
 ## 4. Conclusión
 

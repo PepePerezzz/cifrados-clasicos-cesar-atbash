@@ -4,8 +4,8 @@ const MAX_CHARSET_SIZE = 4096;
 
 /**
  * Separa una cadena sin alterar sus unidades originales.
- * @doc-id CFG-ALPHABET-001
- * @see ../../documentacion_por_id/CFG-ALPHABET-001.md
+ * @doc-id CFG-GRAPHEME-SEGMENT-001
+ * @see ../../documentacion_por_id/CFG-GRAPHEME-SEGMENT-001.md
  */
 export function segmentarGrafemas(texto) {
   if (typeof texto !== "string") {

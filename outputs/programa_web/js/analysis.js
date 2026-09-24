@@ -16,6 +16,11 @@ const PALABRAS_COMUNES = new Set([
 const NGRAMAS_COMUNES = ["de", "en", "es", "la", "el", "que", "ción", "ent", "est", "los"];
 const SECUENCIAS_RARAS = ["jj", "kk", "ww", "qx", "qz", "zx", "ññ"];
 
+/**
+ * Prepara una copia del texto para el análisis lingüístico.
+ * @doc-id ANALYSIS-TEXT-NORMALIZE-001
+ * @see ../../documentacion_por_id/ANALYSIS-TEXT-NORMALIZE-001.md
+ */
 function textoAnalizable(texto) {
   return texto.toLocaleLowerCase("es")
     .normalize("NFD")
@@ -38,7 +43,6 @@ export function puntuarEspanol(texto) {
     return Number.NEGATIVE_INFINITY;
   }
 
-  // DOC-BLOCK ANALYSIS-FREQUENCY-001 START
   const conteo = new Map();
   for (const letra of letras) conteo.set(letra, (conteo.get(letra) ?? 0) + 1);
 
@@ -48,7 +52,6 @@ export function puntuarEspanol(texto) {
     const observado = conteo.get(letra) ?? 0;
     chiCuadrada += ((observado - esperado) ** 2) / esperado;
   }
-  // DOC-BLOCK ANALYSIS-FREQUENCY-001 END
 
   const palabras = muestra.split(/\s+/u).filter(Boolean);
   const comunes = palabras.filter((palabra) => PALABRAS_COMUNES.has(palabra)).length;

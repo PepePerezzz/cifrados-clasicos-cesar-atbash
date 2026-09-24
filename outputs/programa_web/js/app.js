@@ -2,20 +2,40 @@ import { LIMITES, PRESETS, crearAlfabeto, segmentarGrafemas } from "./alphabet.j
 import { cifrarCesar, normalizarDesplazamiento, transformarAtbash } from "./ciphers.js";
 import { detectarYDescifrar } from "./analysis.js";
 
+/**
+ * Busca el primer elemento del DOM que coincide con un selector CSS.
+ * @doc-id UI-QUERY-001
+ * @see ../../documentacion_por_id/UI-QUERY-001.md
+ */
 const $ = (selector) => document.querySelector(selector);
 const estado = { candidatos: [], activos: new Set() };
 
+/**
+ * Devuelve una etiqueta visible para símbolos de control conocidos.
+ * @doc-id UI-SYMBOL-NAME-001
+ * @see ../../documentacion_por_id/UI-SYMBOL-NAME-001.md
+ */
 function nombreVisible(simbolo) {
   const especiales = new Map([[" ", "␠ espacio"], ["\n", "↵ salto"], ["\t", "⇥ tabulador"]]);
   return especiales.get(simbolo) ?? simbolo;
 }
 
+/**
+ * Actualiza el aviso general de la interfaz sin insertar HTML.
+ * @doc-id UI-MESSAGE-001
+ * @see ../../documentacion_por_id/UI-MESSAGE-001.md
+ */
 function mostrarMensaje(texto, tipo = "info") {
   const aviso = $("#aviso");
   aviso.textContent = texto;
   aviso.dataset.tipo = tipo;
 }
 
+/**
+ * Reconstruye las casillas del charset y elimina símbolos repetidos.
+ * @doc-id UI-CHARSET-SELECTOR-001
+ * @see ../../documentacion_por_id/UI-CHARSET-SELECTOR-001.md
+ */
 function reconstruirSelector() {
   const bruto = $("#charset").value;
   const vistos = new Set();
@@ -45,13 +65,18 @@ function reconstruirSelector() {
   $("#contador-charset").textContent = `${estado.activos.size} activos`;
 }
 
+/**
+ * Construye el alfabeto a partir de las casillas activas.
+ * @doc-id UI-ACTIVE-ALPHABET-001
+ * @see ../../documentacion_por_id/UI-ACTIVE-ALPHABET-001.md
+ */
 function alfabetoActivo() {
   return crearAlfabeto(estado.candidatos.filter((simbolo) => estado.activos.has(simbolo)));
 }
 
 /**
- * @doc-id VAL-INPUT-001
- * @see ../../documentacion_por_id/VAL-INPUT-001.md
+ * @doc-id VAL-TEXT-001
+ * @see ../../documentacion_por_id/VAL-TEXT-001.md
  */
 function validarTexto(texto) {
   if (texto.length > LIMITES.texto) {
@@ -61,14 +86,19 @@ function validarTexto(texto) {
 
 /**
  * Usa exclusivamente textContent para impedir que la entrada cree HTML.
- * @doc-id UI-OUTPUT-001
- * @see ../../documentacion_por_id/UI-OUTPUT-001.md
+ * @doc-id UI-SAFE-OUTPUT-001
+ * @see ../../documentacion_por_id/UI-SAFE-OUTPUT-001.md
  */
 function mostrarResultadoSeguro(idSalida, idDetalle, texto = "", detalle = "") {
   document.getElementById(idSalida).textContent = texto;
   document.getElementById(idDetalle).textContent = detalle;
 }
 
+/**
+ * Muestra u oculta el desplazamiento según el método seleccionado.
+ * @doc-id UI-METHOD-STATE-001
+ * @see ../../documentacion_por_id/UI-METHOD-STATE-001.md
+ */
 function actualizarEstadoMetodo() {
   const esCesar = $("#metodo").value === "caesar";
   $("#grupo-desplazamiento").hidden = !esCesar;
@@ -132,6 +162,11 @@ function manejarDescifrado(evento) {
   }
 }
 
+/**
+ * Copia una salida al portapapeles y comunica el resultado al usuario.
+ * @doc-id UI-COPY-001
+ * @see ../../documentacion_por_id/UI-COPY-001.md
+ */
 async function copiarSalida(id) {
   const texto = document.getElementById(id).textContent;
   if (!texto) return mostrarMensaje("No hay un resultado que copiar.", "error");
@@ -143,6 +178,11 @@ async function copiarSalida(id) {
   }
 }
 
+/**
+ * Inicializa el estado, los controles y todos los eventos de la aplicación.
+ * @doc-id UI-INIT-001
+ * @see ../../documentacion_por_id/UI-INIT-001.md
+ */
 function iniciar() {
   $("#charset").value = PRESETS.minusculas;
   reconstruirSelector();

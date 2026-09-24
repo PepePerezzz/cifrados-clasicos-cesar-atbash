@@ -2,6 +2,8 @@ import { segmentarGrafemas } from "./alphabet.js";
 
 /**
  * Convierte cualquier entero en un desplazamiento dentro de [0, n - 1].
+ * @doc-id CIPHER-SHIFT-NORMALIZE-001
+ * @see ../../documentacion_por_id/CIPHER-SHIFT-NORMALIZE-001.md
  */
 export function normalizarDesplazamiento(k, modulo) {
   if (!Number.isInteger(k)) {
