@@ -5,8 +5,9 @@ const MAX_CHARSET_SIZE = 4096;
 /**
  * Separa una cadena sin alterar sus unidades originales.
  * @doc-id CFG-GRAPHEME-SEGMENT-001
- * @see ../../documentacion_por_id/CFG-GRAPHEME-SEGMENT-001.md
+ * @see ../../Documentacion_Segura_Funciones.pdf
  */
+// ID: CFG-GRAPHEME-SEGMENT-001
 export function segmentarGrafemas(texto) {
   if (typeof texto !== "string") {
     throw new TypeError("El valor debe ser una cadena de texto.");
@@ -26,8 +27,9 @@ export function segmentarGrafemas(texto) {
  * Crea el alfabeto ordenado y su mapa de índices.
  * La coincidencia es literal: no normaliza el mensaje ni el charset.
  * @doc-id CFG-ALPHABET-001
- * @see ../../documentacion_por_id/CFG-ALPHABET-001.md
+ * @see ../../Documentacion_Segura_Funciones.pdf
  */
+// ID: CFG-ALPHABET-001
 export function crearAlfabeto(simbolosActivos) {
   const simbolos = Array.isArray(simbolosActivos)
     ? [...simbolosActivos]

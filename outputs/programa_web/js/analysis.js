@@ -19,8 +19,9 @@ const SECUENCIAS_RARAS = ["jj", "kk", "ww", "qx", "qz", "zx", "ññ"];
 /**
  * Prepara una copia del texto para el análisis lingüístico.
  * @doc-id ANALYSIS-TEXT-NORMALIZE-001
- * @see ../../documentacion_por_id/ANALYSIS-TEXT-NORMALIZE-001.md
+ * @see ../../Documentacion_Segura_Funciones.pdf
  */
+// ID: ANALYSIS-TEXT-NORMALIZE-001
 function textoAnalizable(texto) {
   return texto.toLocaleLowerCase("es")
     .normalize("NFD")
@@ -32,8 +33,9 @@ function textoAnalizable(texto) {
  * Aplica la idea de análisis de frecuencias atribuida a al-Kindī y añade
  * señales lingüísticas sencillas. Sólo recibe copias; nunca altera la salida.
  * @doc-id ANALYSIS-LANGUAGE-SCORE-001
- * @see ../../documentacion_por_id/ANALYSIS-LANGUAGE-SCORE-001.md
+ * @see ../../Documentacion_Segura_Funciones.pdf
  */
+// ID: ANALYSIS-LANGUAGE-SCORE-001
 export function puntuarEspanol(texto) {
   const muestra = textoAnalizable(texto);
   const letras = Array.from(muestra).filter((c) => Object.hasOwn(FRECUENCIAS_ES, c));
@@ -90,8 +92,9 @@ export function puntuarEspanol(texto) {
 /**
  * Genera internamente todas las hipótesis permitidas.
  * @doc-id ANALYSIS-CANDIDATES-001
- * @see ../../documentacion_por_id/ANALYSIS-CANDIDATES-001.md
+ * @see ../../Documentacion_Segura_Funciones.pdf
  */
+// ID: ANALYSIS-CANDIDATES-001
 export function generarCandidatos(criptograma, alfabeto) {
   const candidatos = [{
     metodo: "atbash",
@@ -112,8 +115,9 @@ export function generarCandidatos(criptograma, alfabeto) {
 /**
  * Selecciona y devuelve una sola hipótesis; las alternativas no llegan al DOM.
  * @doc-id ANALYSIS-AUTO-DETECT-001
- * @see ../../documentacion_por_id/ANALYSIS-AUTO-DETECT-001.md
+ * @see ../../Documentacion_Segura_Funciones.pdf
  */
+// ID: ANALYSIS-AUTO-DETECT-001
 export function detectarYDescifrar(criptograma, alfabeto) {
   const evaluados = generarCandidatos(criptograma, alfabeto)
     .map((candidato) => ({ ...candidato, puntuacion: puntuarEspanol(candidato.texto) }))

@@ -5,16 +5,18 @@ import { detectarYDescifrar } from "./analysis.js";
 /**
  * Busca el primer elemento del DOM que coincide con un selector CSS.
  * @doc-id UI-QUERY-001
- * @see ../../documentacion_por_id/UI-QUERY-001.md
+ * @see ../../Documentacion_Segura_Funciones.pdf
  */
+// ID: UI-QUERY-001
 const $ = (selector) => document.querySelector(selector);
 const estado = { candidatos: [], activos: new Set() };
 
 /**
  * Devuelve una etiqueta visible para símbolos de control conocidos.
  * @doc-id UI-SYMBOL-NAME-001
- * @see ../../documentacion_por_id/UI-SYMBOL-NAME-001.md
+ * @see ../../Documentacion_Segura_Funciones.pdf
  */
+// ID: UI-SYMBOL-NAME-001
 function nombreVisible(simbolo) {
   const especiales = new Map([[" ", "␠ espacio"], ["\n", "↵ salto"], ["\t", "⇥ tabulador"]]);
   return especiales.get(simbolo) ?? simbolo;
@@ -23,8 +25,9 @@ function nombreVisible(simbolo) {
 /**
  * Actualiza el aviso general de la interfaz sin insertar HTML.
  * @doc-id UI-MESSAGE-001
- * @see ../../documentacion_por_id/UI-MESSAGE-001.md
+ * @see ../../Documentacion_Segura_Funciones.pdf
  */
+// ID: UI-MESSAGE-001
 function mostrarMensaje(texto, tipo = "info") {
   const aviso = $("#aviso");
   aviso.textContent = texto;
@@ -34,8 +37,9 @@ function mostrarMensaje(texto, tipo = "info") {
 /**
  * Reconstruye las casillas del charset y elimina símbolos repetidos.
  * @doc-id UI-CHARSET-SELECTOR-001
- * @see ../../documentacion_por_id/UI-CHARSET-SELECTOR-001.md
+ * @see ../../Documentacion_Segura_Funciones.pdf
  */
+// ID: UI-CHARSET-SELECTOR-001
 function reconstruirSelector() {
   const bruto = $("#charset").value;
   const vistos = new Set();
@@ -68,16 +72,18 @@ function reconstruirSelector() {
 /**
  * Construye el alfabeto a partir de las casillas activas.
  * @doc-id UI-ACTIVE-ALPHABET-001
- * @see ../../documentacion_por_id/UI-ACTIVE-ALPHABET-001.md
+ * @see ../../Documentacion_Segura_Funciones.pdf
  */
+// ID: UI-ACTIVE-ALPHABET-001
 function alfabetoActivo() {
   return crearAlfabeto(estado.candidatos.filter((simbolo) => estado.activos.has(simbolo)));
 }
 
 /**
  * @doc-id VAL-TEXT-001
- * @see ../../documentacion_por_id/VAL-TEXT-001.md
+ * @see ../../Documentacion_Segura_Funciones.pdf
  */
+// ID: VAL-TEXT-001
 function validarTexto(texto) {
   if (texto.length > LIMITES.texto) {
     throw new RangeError(`El mensaje no puede superar ${LIMITES.texto.toLocaleString("es-MX")} caracteres.`);
@@ -87,8 +93,9 @@ function validarTexto(texto) {
 /**
  * Usa exclusivamente textContent para impedir que la entrada cree HTML.
  * @doc-id UI-SAFE-OUTPUT-001
- * @see ../../documentacion_por_id/UI-SAFE-OUTPUT-001.md
+ * @see ../../Documentacion_Segura_Funciones.pdf
  */
+// ID: UI-SAFE-OUTPUT-001
 function mostrarResultadoSeguro(idSalida, idDetalle, texto = "", detalle = "") {
   document.getElementById(idSalida).textContent = texto;
   document.getElementById(idDetalle).textContent = detalle;
@@ -97,8 +104,9 @@ function mostrarResultadoSeguro(idSalida, idDetalle, texto = "", detalle = "") {
 /**
  * Muestra u oculta el desplazamiento según el método seleccionado.
  * @doc-id UI-METHOD-STATE-001
- * @see ../../documentacion_por_id/UI-METHOD-STATE-001.md
+ * @see ../../Documentacion_Segura_Funciones.pdf
  */
+// ID: UI-METHOD-STATE-001
 function actualizarEstadoMetodo() {
   const esCesar = $("#metodo").value === "caesar";
   $("#grupo-desplazamiento").hidden = !esCesar;
@@ -107,8 +115,9 @@ function actualizarEstadoMetodo() {
 
 /**
  * @doc-id UI-ENCRYPT-001
- * @see ../../documentacion_por_id/UI-ENCRYPT-001.md
+ * @see ../../Documentacion_Segura_Funciones.pdf
  */
+// ID: UI-ENCRYPT-001
 function manejarCifrado(evento) {
   evento.preventDefault();
   try {
@@ -142,8 +151,9 @@ function manejarCifrado(evento) {
 
 /**
  * @doc-id UI-DECRYPT-001
- * @see ../../documentacion_por_id/UI-DECRYPT-001.md
+ * @see ../../Documentacion_Segura_Funciones.pdf
  */
+// ID: UI-DECRYPT-001
 function manejarDescifrado(evento) {
   evento.preventDefault();
   try {
@@ -165,8 +175,9 @@ function manejarDescifrado(evento) {
 /**
  * Copia una salida al portapapeles y comunica el resultado al usuario.
  * @doc-id UI-COPY-001
- * @see ../../documentacion_por_id/UI-COPY-001.md
+ * @see ../../Documentacion_Segura_Funciones.pdf
  */
+// ID: UI-COPY-001
 async function copiarSalida(id) {
   const texto = document.getElementById(id).textContent;
   if (!texto) return mostrarMensaje("No hay un resultado que copiar.", "error");
@@ -181,8 +192,9 @@ async function copiarSalida(id) {
 /**
  * Inicializa el estado, los controles y todos los eventos de la aplicación.
  * @doc-id UI-INIT-001
- * @see ../../documentacion_por_id/UI-INIT-001.md
+ * @see ../../Documentacion_Segura_Funciones.pdf
  */
+// ID: UI-INIT-001
 function iniciar() {
   $("#charset").value = PRESETS.minusculas;
   reconstruirSelector();

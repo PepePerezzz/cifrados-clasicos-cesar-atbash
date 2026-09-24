@@ -7,7 +7,7 @@ Proyecto web académico para cifrar y descifrar mensajes con César y Atbash usa
 - Programa web: <https://pepeperezzz.github.io/cifrados-clasicos-cesar-atbash/>
 - Código documentado: <https://github.com/PepePerezzz/cifrados-clasicos-cesar-atbash>
 - Documentación principal: [`outputs/Documentacion_Proyecto_Cifrados_Clasicos.md`](outputs/Documentacion_Proyecto_Cifrados_Clasicos.md)
-- Documentación por identificador: [`outputs/documentacion_por_id/`](outputs/documentacion_por_id/)
+- Documentación segura consolidada: [`outputs/Documentacion_Segura_Funciones.pdf`](outputs/Documentacion_Segura_Funciones.pdf)
 
 ## Funciones principales
 
@@ -33,10 +33,9 @@ Después, abrir <http://localhost:8000>.
 ```text
 outputs/
 ├── programa_web/                 # Sitio estático y pruebas
-├── documentacion_por_id/         # Explicación separada de funciones/bloques
+├── Documentacion_Segura_Funciones.pdf # IDs y explicación de todas las funciones
 ├── Documentacion_Proyecto_Cifrados_Clasicos.md
 └── Documentacion_Proyecto_Cifrados_Clasicos.docx
 ```
 
 > Aviso: César y Atbash se incluyen con fines educativos. No deben usarse para proteger información real.
-

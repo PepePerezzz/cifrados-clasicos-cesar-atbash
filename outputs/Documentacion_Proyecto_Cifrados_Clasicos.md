@@ -109,8 +109,7 @@ outputs/
 │   └── tests/
 │       ├── ciphers.test.mjs
 │       └── analysis.test.mjs
-└── documentacion_por_id/
-    └── [UN ARCHIVO POR CADA ID]
+└── Documentacion_Segura_Funciones.pdf # catálogo consolidado de IDs
 ```
 
 El flujo de datos propuesto es el siguiente:
@@ -124,16 +123,20 @@ El flujo de datos propuesto es el siguiente:
 
 ### 3.3 Documentación segura mediante identificadores
 
-No se recomienda insertar capturas del código ni copiar archivos completos dentro del informe. Las imágenes se vuelven obsoletas, no permiten búsqueda y pueden exponer información que después se retire del repositorio. En su lugar, cada función o bloque importante recibe un identificador único y una ficha Markdown independiente. El comentario en el código contiene solamente el ID y la ruta documental.
+No se recomienda insertar capturas del código ni copiar archivos completos dentro del informe. Las imágenes se vuelven obsoletas, no permiten búsqueda y pueden exponer información que después se retire del repositorio. En su lugar, cada función o bloque importante recibe un identificador único. Todas las explicaciones se reúnen en un solo PDF, mientras que el ID aparece como comentario visible justo encima de la función correspondiente.
 
 ```js
 /**
  * @doc-id CIPHER-CAESAR-ENC-001
- * @see ../../documentacion_por_id/CIPHER-CAESAR-ENC-001.md
+ * @see ../../Documentacion_Segura_Funciones.pdf
  */
+// ID: CIPHER-CAESAR-ENC-001
+function cifrarCesar(...) {
+  // ...
+}
 ```
 
-La versión actual documenta exclusivamente funciones reales: cada función tiene un solo ID y cada ID una sola ficha. Cada ficha independiente documenta responsabilidad, entradas, salidas, algoritmo, complejidad, errores y seguridad. La liga al código debe apuntar a un commit o etiqueta permanente, no a números de línea de una rama cambiante. Antes de hacer público el repositorio se debe comprobar que el historial no contiene contraseñas, tokens, claves privadas, archivos `.env`, credenciales de servicios o datos personales. Si una credencial se filtra, primero se revoca o rota; borrarla en un commit posterior no la elimina del historial.
+La versión actual documenta exclusivamente funciones reales: cada función tiene un solo ID y cada ID cuenta con una sección propia dentro de `Documentacion_Segura_Funciones.pdf`. Ese documento único explica responsabilidad, entradas, salidas, algoritmo, complejidad, errores y seguridad. La liga al código debe apuntar a un commit o etiqueta permanente, no a números de línea de una rama cambiante. Antes de hacer público el repositorio se debe comprobar que el historial no contiene contraseñas, tokens, claves privadas, archivos `.env`, credenciales de servicios o datos personales. Si una credencial se filtra, primero se revoca o rota; borrarla en un commit posterior no la elimina del historial.
 
 ### 3.4 Alfabeto configurable: ASCII y Unicode
 
@@ -158,7 +161,7 @@ Reglas de coincidencia implementadas:
 - Conservar sin cambio los grafemas que no estén activados, aunque estuvieran disponibles antes de que el usuario desmarcara su casilla.
 - Mostrar al usuario el valor calculado de *n* y el desplazamiento normalizado *k′*.
 
-Las fichas [CFG-GRAPHEME-SEGMENT-001](documentacion_por_id/CFG-GRAPHEME-SEGMENT-001.md) y [CFG-ALPHABET-001](documentacion_por_id/CFG-ALPHABET-001.md) formalizan el charset; [VAL-TEXT-001](documentacion_por_id/VAL-TEXT-001.md) define el límite del mensaje y [CIPHER-PASSTHROUGH-001](documentacion_por_id/CIPHER-PASSTHROUGH-001.md) documenta el recorrido compartido por los tres algoritmos.
+Las secciones `CFG-GRAPHEME-SEGMENT-001` y `CFG-ALPHABET-001` del [PDF consolidado](Documentacion_Segura_Funciones.pdf) formalizan el charset; `VAL-TEXT-001` define el límite del mensaje y `CIPHER-PASSTHROUGH-001` documenta el recorrido compartido por los tres algoritmos.
 
 #### 3.4.1 Regla de caracteres fuera de la lista
 
@@ -194,7 +197,7 @@ El descifrado se define como:
 Dₖ(xᵢ) = x₍ᵢ₋ₖ′₎ mod n
 ```
 
-Para evitar una “cifra” idéntica al original, la interfaz debe rechazar *k′ = 0* durante el cifrado, aunque el motor pueda aceptarlo en pruebas internas. Las fichas [CIPHER-CAESAR-ENC-001](documentacion_por_id/CIPHER-CAESAR-ENC-001.md) y [CIPHER-CAESAR-DEC-001](documentacion_por_id/CIPHER-CAESAR-DEC-001.md) documentan ambas operaciones.
+Para evitar una “cifra” idéntica al original, la interfaz debe rechazar *k′ = 0* durante el cifrado, aunque el motor pueda aceptarlo en pruebas internas. Las secciones `CIPHER-CAESAR-ENC-001` y `CIPHER-CAESAR-DEC-001` del [PDF consolidado](Documentacion_Segura_Funciones.pdf) documentan ambas operaciones.
 
 Atbash invierte la posición dentro del alfabeto:
 
@@ -202,7 +205,7 @@ Atbash invierte la posición dentro del alfabeto:
 A(xᵢ) = xₙ₋₁₋ᵢ
 ```
 
-La misma operación cifra y descifra porque `A(A(x)) = x`. No existe un desplazamiento ni una clave variable. La responsabilidad se documenta en [CIPHER-ATBASH-001](documentacion_por_id/CIPHER-ATBASH-001.md).
+La misma operación cifra y descifra porque `A(A(x)) = x`. No existe un desplazamiento ni una clave variable. La responsabilidad se documenta en la sección `CIPHER-ATBASH-001` del [PDF consolidado](Documentacion_Segura_Funciones.pdf).
 
 En la pantalla de cifrado, el usuario selecciona el método. Cuando elige César se habilita el campo *k*; cuando elige Atbash se deshabilita y se limpia ese campo. El resultado se calcula localmente y debe acompañarse de un botón de copia que use la API del portapapeles solo después de una acción explícita.
 
@@ -232,7 +235,7 @@ El componente de frecuencias puede emplear la estadística chi cuadrada:
 S(c) = −α·χ²(c) + β·Lₙ₋gramas(c) + γ·Cpalabras(c) − δ·Pimprobable(c)
 ```
 
-El prototipo fija de forma transparente `α=1`, `β=2.5`, `γ=14` y `δ=8`, además de una penalización por desviación de la proporción de vocales. Para charsets amplios también suma `25·coberturaLetras` y resta `5·símbolosNoLingüísticos`; así, una hipótesis con unas pocas letras estadísticamente plausibles no puede superar fácilmente a una oración legible rodeada de puntuación normal. Estos pesos permiten una demostración reproducible, pero deben calibrarse con un corpus y evaluarse con otro antes de informar exactitud. [ANALYSIS-CANDIDATES-001](documentacion_por_id/ANALYSIS-CANDIDATES-001.md), [ANALYSIS-LANGUAGE-SCORE-001](documentacion_por_id/ANALYSIS-LANGUAGE-SCORE-001.md) y [ANALYSIS-AUTO-DETECT-001](documentacion_por_id/ANALYSIS-AUTO-DETECT-001.md) separan generación, evaluación y decisión.
+El prototipo fija de forma transparente `α=1`, `β=2.5`, `γ=14` y `δ=8`, además de una penalización por desviación de la proporción de vocales. Para charsets amplios también suma `25·coberturaLetras` y resta `5·símbolosNoLingüísticos`; así, una hipótesis con unas pocas letras estadísticamente plausibles no puede superar fácilmente a una oración legible rodeada de puntuación normal. Estos pesos permiten una demostración reproducible, pero deben calibrarse con un corpus y evaluarse con otro antes de informar exactitud. Las secciones `ANALYSIS-CANDIDATES-001`, `ANALYSIS-LANGUAGE-SCORE-001` y `ANALYSIS-AUTO-DETECT-001` del [PDF consolidado](Documentacion_Segura_Funciones.pdf) separan generación, evaluación y decisión.
 
 ### 3.7 Aplicación del método de al-Kindī
 
@@ -248,7 +251,7 @@ El conocimiento histórico no aparece como un párrafo decorativo; se traduce en
 | Refinar hipótesis | Puntaje combinado y regla de desempate |
 | Elegir la lectura más probable | Selector automático sin lista visible |
 
-El análisis de frecuencias se documenta en [ANALYSIS-LANGUAGE-SCORE-001](documentacion_por_id/ANALYSIS-LANGUAGE-SCORE-001.md) y la preparación de su copia en [ANALYSIS-TEXT-NORMALIZE-001](documentacion_por_id/ANALYSIS-TEXT-NORMALIZE-001.md). El modelo nunca modifica el texto candidato que se muestra; analiza una copia normalizada para evitar perder mayúsculas, signos o grafemas.
+El análisis de frecuencias se documenta en `ANALYSIS-LANGUAGE-SCORE-001` y la preparación de su copia en `ANALYSIS-TEXT-NORMALIZE-001`, ambos dentro del [PDF consolidado](Documentacion_Segura_Funciones.pdf). El modelo nunca modifica el texto candidato que se muestra; analiza una copia normalizada para evitar perder mayúsculas, signos o grafemas.
 
 ### 3.8 Salida única y validación automática
 
@@ -274,7 +277,7 @@ Controles mínimos de accesibilidad y claridad:
 - Desactivar el botón mientras exista un error de validación.
 - No borrar automáticamente el texto introducido después de procesarlo.
 
-Los controladores se describen en [UI-ENCRYPT-001](documentacion_por_id/UI-ENCRYPT-001.md) y [UI-DECRYPT-001](documentacion_por_id/UI-DECRYPT-001.md); la salida se limita mediante [UI-SAFE-OUTPUT-001](documentacion_por_id/UI-SAFE-OUTPUT-001.md).
+Los controladores se describen en `UI-ENCRYPT-001` y `UI-DECRYPT-001`; la salida se limita mediante `UI-SAFE-OUTPUT-001`. Las tres explicaciones están reunidas en el [PDF consolidado](Documentacion_Segura_Funciones.pdf).
 
 ### 3.10 Seguridad y privacidad
 
@@ -301,7 +304,7 @@ style-src 'self'; img-src 'self' data:; object-src 'none';
 base-uri 'none'; frame-ancestors 'none'
 ```
 
-El [índice de documentación segura](documentacion_por_id/README.md) define el vínculo entre código e IDs. [UI-SAFE-OUTPUT-001](documentacion_por_id/UI-SAFE-OUTPUT-001.md) incluye la defensa frente a inyección en el DOM. OWASP recomienda precisamente tratar `textContent` como un destino seguro para texto no confiable y evitar insertar entradas en contextos HTML ejecutables (OWASP Foundation, s. f.).
+La [documentación segura consolidada](Documentacion_Segura_Funciones.pdf) define el vínculo entre código e IDs. Su sección `UI-SAFE-OUTPUT-001` incluye la defensa frente a inyección en el DOM. OWASP recomienda precisamente tratar `textContent` como un destino seguro para texto no confiable y evitar insertar entradas en contextos HTML ejecutables (OWASP Foundation, s. f.).
 
 ### 3.11 Publicación del sitio y del código
 
@@ -310,7 +313,7 @@ Para una aplicación compuesta únicamente por HTML, CSS y JavaScript, GitHub Pa
 Procedimiento aplicado con GitHub Pages:
 
 1. Se creó un repositorio público sin secretos ni datos personales innecesarios.
-2. Se incluyeron el programa, las pruebas y `documentacion_por_id/` con sus fichas por ID.
+2. Se incluyeron el programa, las pruebas y `Documentacion_Segura_Funciones.pdf` con todas las secciones por ID.
 3. Antes de publicar se ejecutó `npm test` y se conservaron las pruebas reproducibles en el repositorio.
 4. Se creó la etiqueta inmutable de entrega `v1.0.0`.
 5. GitHub Pages sirve la rama `gh-pages`, generada exclusivamente desde `outputs/programa_web`.
@@ -367,7 +370,7 @@ Las pruebas reproducibles de `tests/ciphers.test.mjs`, `tests/analysis.test.mjs`
 | Índice | 2 % | Índice navegable | Documentado |
 | Introducción y al-Kindī | 5 % | Sección 1 y bibliografía académica | Documentado |
 | Objetivo | 3 % | Sección 2 | Documentado |
-| Documentación segura | 10 % | Secciones 3.2, 3.3 y fichas por ID | Implementada y enlazada a la etiqueta pública `v1.0.0` |
+| Documentación segura | 10 % | Secciones 3.2, 3.3 y PDF consolidado por ID | Implementada en un único documento y vinculada al código |
 | Conjunto ASCII/no ASCII | 5 % | Sección 3.4 | Implementado y probado |
 | Selección y cifrado | 10 % | Sección 3.5 | Implementado y probado |
 | Detección tipo y módulo | 30 % | Secciones 3.6 y 3.8 | Prototipo probado; falta calibración amplia |
@@ -378,33 +381,33 @@ Las pruebas reproducibles de `tests/ciphers.test.mjs`, `tests/analysis.test.mjs`
 
 ### 3.14 Catálogo de funciones y bloques por ID
 
-Los nombres y firmas corresponden a la implementación real. Cada función tiene un ID único y una ficha independiente.
+Los nombres y firmas corresponden a la implementación real. Cada función tiene un ID único y una sección dentro del [PDF consolidado](Documentacion_Segura_Funciones.pdf).
 
 | ID | Función o bloque | Responsabilidad principal |
 |---|---|---|
-| [CFG-GRAPHEME-SEGMENT-001](documentacion_por_id/CFG-GRAPHEME-SEGMENT-001.md) | `segmentarGrafemas` | Separar texto en grafemas |
-| [CFG-ALPHABET-001](documentacion_por_id/CFG-ALPHABET-001.md) | `crearAlfabeto` | Validar y construir el alfabeto |
-| [CIPHER-SHIFT-NORMALIZE-001](documentacion_por_id/CIPHER-SHIFT-NORMALIZE-001.md) | `normalizarDesplazamiento` | Ajustar cualquier entero al módulo |
-| [CIPHER-PASSTHROUGH-001](documentacion_por_id/CIPHER-PASSTHROUGH-001.md) | `transformarSoloActivos` | Conservar literalmente todo grafema inactivo |
-| [CIPHER-CAESAR-ENC-001](documentacion_por_id/CIPHER-CAESAR-ENC-001.md) | `cifrarCesar` | Aplicar desplazamiento positivo modular |
-| [CIPHER-CAESAR-DEC-001](documentacion_por_id/CIPHER-CAESAR-DEC-001.md) | `descifrarCesar` | Aplicar desplazamiento inverso modular |
-| [CIPHER-ATBASH-001](documentacion_por_id/CIPHER-ATBASH-001.md) | `transformarAtbash` | Reflejar posiciones del alfabeto |
-| [ANALYSIS-TEXT-NORMALIZE-001](documentacion_por_id/ANALYSIS-TEXT-NORMALIZE-001.md) | `textoAnalizable` | Preparar una copia para análisis |
-| [ANALYSIS-CANDIDATES-001](documentacion_por_id/ANALYSIS-CANDIDATES-001.md) | `generarCandidatos` | Enumerar Atbash y todas las rotaciones César |
-| [ANALYSIS-LANGUAGE-SCORE-001](documentacion_por_id/ANALYSIS-LANGUAGE-SCORE-001.md) | `puntuarEspanol` | Combinar frecuencias, n-gramas y léxico |
-| [ANALYSIS-AUTO-DETECT-001](documentacion_por_id/ANALYSIS-AUTO-DETECT-001.md) | `detectarYDescifrar` | Elegir de forma determinista una sola salida |
-| [UI-QUERY-001](documentacion_por_id/UI-QUERY-001.md) | `$` | Consultar un elemento del DOM |
-| [UI-SYMBOL-NAME-001](documentacion_por_id/UI-SYMBOL-NAME-001.md) | `nombreVisible` | Etiquetar caracteres de control |
-| [UI-MESSAGE-001](documentacion_por_id/UI-MESSAGE-001.md) | `mostrarMensaje` | Presentar avisos seguros |
-| [UI-CHARSET-SELECTOR-001](documentacion_por_id/UI-CHARSET-SELECTOR-001.md) | `reconstruirSelector` | Crear casillas del charset |
-| [UI-ACTIVE-ALPHABET-001](documentacion_por_id/UI-ACTIVE-ALPHABET-001.md) | `alfabetoActivo` | Construir el conjunto habilitado |
-| [VAL-TEXT-001](documentacion_por_id/VAL-TEXT-001.md) | `validarTexto` | Limitar el tamaño del mensaje |
-| [UI-SAFE-OUTPUT-001](documentacion_por_id/UI-SAFE-OUTPUT-001.md) | `mostrarResultadoSeguro` | Escribir texto sin interpretar HTML |
-| [UI-METHOD-STATE-001](documentacion_por_id/UI-METHOD-STATE-001.md) | `actualizarEstadoMetodo` | Sincronizar controles por método |
-| [UI-ENCRYPT-001](documentacion_por_id/UI-ENCRYPT-001.md) | `manejarCifrado` | Coordinar validación, cifrado y presentación |
-| [UI-DECRYPT-001](documentacion_por_id/UI-DECRYPT-001.md) | `manejarDescifrado` | Coordinar el análisis automático |
-| [UI-COPY-001](documentacion_por_id/UI-COPY-001.md) | `copiarSalida` | Copiar resultados al portapapeles |
-| [UI-INIT-001](documentacion_por_id/UI-INIT-001.md) | `iniciar` | Inicializar estado y eventos |
+| `CFG-GRAPHEME-SEGMENT-001` | `segmentarGrafemas` | Separar texto en grafemas |
+| `CFG-ALPHABET-001` | `crearAlfabeto` | Validar y construir el alfabeto |
+| `CIPHER-SHIFT-NORMALIZE-001` | `normalizarDesplazamiento` | Ajustar cualquier entero al módulo |
+| `CIPHER-PASSTHROUGH-001` | `transformarSoloActivos` | Conservar literalmente todo grafema inactivo |
+| `CIPHER-CAESAR-ENC-001` | `cifrarCesar` | Aplicar desplazamiento positivo modular |
+| `CIPHER-CAESAR-DEC-001` | `descifrarCesar` | Aplicar desplazamiento inverso modular |
+| `CIPHER-ATBASH-001` | `transformarAtbash` | Reflejar posiciones del alfabeto |
+| `ANALYSIS-TEXT-NORMALIZE-001` | `textoAnalizable` | Preparar una copia para análisis |
+| `ANALYSIS-CANDIDATES-001` | `generarCandidatos` | Enumerar Atbash y todas las rotaciones César |
+| `ANALYSIS-LANGUAGE-SCORE-001` | `puntuarEspanol` | Combinar frecuencias, n-gramas y léxico |
+| `ANALYSIS-AUTO-DETECT-001` | `detectarYDescifrar` | Elegir de forma determinista una sola salida |
+| `UI-QUERY-001` | `$` | Consultar un elemento del DOM |
+| `UI-SYMBOL-NAME-001` | `nombreVisible` | Etiquetar caracteres de control |
+| `UI-MESSAGE-001` | `mostrarMensaje` | Presentar avisos seguros |
+| `UI-CHARSET-SELECTOR-001` | `reconstruirSelector` | Crear casillas del charset |
+| `UI-ACTIVE-ALPHABET-001` | `alfabetoActivo` | Construir el conjunto habilitado |
+| `VAL-TEXT-001` | `validarTexto` | Limitar el tamaño del mensaje |
+| `UI-SAFE-OUTPUT-001` | `mostrarResultadoSeguro` | Escribir texto sin interpretar HTML |
+| `UI-METHOD-STATE-001` | `actualizarEstadoMetodo` | Sincronizar controles por método |
+| `UI-ENCRYPT-001` | `manejarCifrado` | Coordinar validación, cifrado y presentación |
+| `UI-DECRYPT-001` | `manejarDescifrado` | Coordinar el análisis automático |
+| `UI-COPY-001` | `copiarSalida` | Copiar resultados al portapapeles |
+| `UI-INIT-001` | `iniciar` | Inicializar estado y eventos |
 
 ### 3.15 Limitaciones y uso ético
 
@@ -418,7 +421,7 @@ El proyecto integra dos dimensiones complementarias. Por un lado, implementa los
 
 La aportación de al-Kindī permite comprender la debilidad esencial de estos métodos. Una sustitución cambia los símbolos, pero conserva suficientes regularidades del idioma para que un análisis cuantitativo recupere información. El conteo de frecuencias funciona como fundamento histórico y computacional; los n-gramas y el vocabulario refinan la selección en oraciones más breves. Al mismo tiempo, reconocer los casos ambiguos evita confundir una aproximación estadística con una garantía matemática.
 
-La documentación por IDs ofrece una forma segura, mantenible y verificable de explicar el código sin recurrir a impresiones. Cada responsabilidad tiene una ficha propia y puede enlazarse a un commit permanente y a pruebas reproducibles. Las medidas de salida segura, procesamiento local y ausencia de secretos reducen riesgos ajenos al objetivo didáctico.
+La documentación por IDs ofrece una forma segura, mantenible y verificable de explicar el código sin recurrir a impresiones. Cada responsabilidad tiene una sección propia dentro de un solo PDF y puede relacionarse con un commit permanente y pruebas reproducibles. Las medidas de salida segura, procesamiento local y ausencia de secretos reducen riesgos ajenos al objetivo didáctico.
 
 El cumplimiento final de la rúbrica depende de completar los datos académicos de portada y conservar la evidencia del flujo de despliegue y sus pruebas. La implementación, sus ligas públicas y sus pruebas automatizadas permiten demostrar de forma práctica que César y Atbash son útiles para aprender aritmética modular e historia del criptoanálisis, pero no son mecanismos adecuados para proteger información contemporánea.
 
@@ -473,7 +476,7 @@ Unicode Consortium. (2025). *Unicode Standard Annex #29: Unicode Text Segmentati
 | Commit/etiqueta | [`v1.0.0`](https://github.com/PepePerezzz/cifrados-clasicos-cesar-atbash/tree/v1.0.0) |
 | Reporte de pruebas | [`outputs/programa_web/tests/`](https://github.com/PepePerezzz/cifrados-clasicos-cesar-atbash/tree/v1.0.0/outputs/programa_web/tests) y `npm test` |
 | Modelo de español y licencia | Implementación educativa propia en `outputs/programa_web/js/analysis.js` |
-| Matriz de IDs completa | `documentacion_por_id/README.md` |
+| Matriz de IDs completa | `Documentacion_Segura_Funciones.pdf` |
 
 ### Anexo C. Convención de estados para las fichas
 

@@ -3,8 +3,9 @@ import { segmentarGrafemas } from "./alphabet.js";
 /**
  * Convierte cualquier entero en un desplazamiento dentro de [0, n - 1].
  * @doc-id CIPHER-SHIFT-NORMALIZE-001
- * @see ../../documentacion_por_id/CIPHER-SHIFT-NORMALIZE-001.md
+ * @see ../../Documentacion_Segura_Funciones.pdf
  */
+// ID: CIPHER-SHIFT-NORMALIZE-001
 export function normalizarDesplazamiento(k, modulo) {
   if (!Number.isInteger(k)) {
     throw new TypeError("El desplazamiento César debe ser un número entero.");
@@ -19,8 +20,9 @@ export function normalizarDesplazamiento(k, modulo) {
  * Recorre la entrada por grafemas. Si un grafema no está en el mapa activo,
  * lo devuelve literalmente y en el mismo orden relativo.
  * @doc-id CIPHER-PASSTHROUGH-001
- * @see ../../documentacion_por_id/CIPHER-PASSTHROUGH-001.md
+ * @see ../../Documentacion_Segura_Funciones.pdf
  */
+// ID: CIPHER-PASSTHROUGH-001
 export function transformarSoloActivos(texto, alfabeto, resolverIndice) {
   if (typeof texto !== "string") {
     throw new TypeError("El texto debe ser una cadena.");
@@ -50,8 +52,9 @@ export function transformarSoloActivos(texto, alfabeto, resolverIndice) {
 
 /**
  * @doc-id CIPHER-CAESAR-ENC-001
- * @see ../../documentacion_por_id/CIPHER-CAESAR-ENC-001.md
+ * @see ../../Documentacion_Segura_Funciones.pdf
  */
+// ID: CIPHER-CAESAR-ENC-001
 export function cifrarCesar(texto, k, alfabeto) {
   const desplazamiento = normalizarDesplazamiento(k, alfabeto.modulo);
   return transformarSoloActivos(
@@ -63,8 +66,9 @@ export function cifrarCesar(texto, k, alfabeto) {
 
 /**
  * @doc-id CIPHER-CAESAR-DEC-001
- * @see ../../documentacion_por_id/CIPHER-CAESAR-DEC-001.md
+ * @see ../../Documentacion_Segura_Funciones.pdf
  */
+// ID: CIPHER-CAESAR-DEC-001
 export function descifrarCesar(texto, k, alfabeto) {
   const desplazamiento = normalizarDesplazamiento(k, alfabeto.modulo);
   return transformarSoloActivos(
@@ -77,8 +81,9 @@ export function descifrarCesar(texto, k, alfabeto) {
 /**
  * Atbash es involutivo: la misma función cifra y descifra.
  * @doc-id CIPHER-ATBASH-001
- * @see ../../documentacion_por_id/CIPHER-ATBASH-001.md
+ * @see ../../Documentacion_Segura_Funciones.pdf
  */
+// ID: CIPHER-ATBASH-001
 export function transformarAtbash(texto, alfabeto) {
   return transformarSoloActivos(
     texto,
